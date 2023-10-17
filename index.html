@@ -12,25 +12,21 @@
     />
     <link rel="stylesheet" href="./assets/css/normalize.css" />
     <link rel="stylesheet" href="./assets/css/style.css" />
+    <script src="./assets/js/slider.js"></script>
   </head>
   <body>
     <div class="con">
-      <section class="slider">
-        <div class="slider--window">
-          <div class="slider--track">
-            <div class="slide">1</div>
-            <div class="slide">2</div>
-            <div class="slide">3</div>
-            <div class="slide">4</div>
-            <div class="slide">5</div>
-          </div>
-        </div>
-        <div class="slider-nav">
-          <button class="slider--step" data-step="back"></button>
-          <button class="slider--step" data-step="next"></button>
-        </div>
+      <section class="slider" data-slider>
+        <div class="slide">1</div>
+        <div class="slide">2</div>
+        <div class="slide">3</div>
+        <div class="slide">4</div>
+        <div class="slide">5</div>
       </section>
     </div>
-    <script src="./assets/js/slider.js" defer></script>
+
+    <script>
+      new SimpleGlide("[data-slider]");
+    </script>
   </body>
 </html>

@@ -6,7 +6,7 @@ class SimpleGlide {
     };
 
     const auto = {
-      speed: 1000,
+      speed: 0,
       timer: false,
     };
 
@@ -17,6 +17,21 @@ class SimpleGlide {
       timer: auto.timer,
     };
   })();
+
+  static sliderСomponents = {
+    buttons: (slider) => {
+      SimpleGlide.addButtons(slider);
+    },
+    // radio: (slider) => {
+    //   SimpleGlide.addRadio(slider);
+    // },
+    // speed: (slider) => {
+    //   SimpleGlide.addButtons(slider);
+    // },
+    // timer: (slider) => {
+    //   SimpleGlide.addButtons(slider);
+    // },
+  };
 
   static elements = (function () {
     function _createElement(tag, cls) {
@@ -62,24 +77,33 @@ class SimpleGlide {
     };
   })();
 
-  constructor(selector) {
+  constructor(selector, defaultFillter = false) {
     this.selectors = document.querySelectorAll(selector);
+    const fillter =
+      typeof defaultFillter == "object" ? defaultFillter : SimpleGlide.default;
 
-    SimpleGlide.createTrack(this.selectors);
-  }
-
-  static createTrack(sliders) {
-    if (!sliders.length) {
+    if (!this.selectors.length) {
       return false;
     }
 
+    SimpleGlide.createTrack(this.selectors, fillter);
+  }
+
+  static createTrack(sliders, fillter) {
     sliders.forEach((slider) => {
       SimpleGlide.elements.createTrack(slider);
-
-      if (SimpleGlide.default.buttons) {
-        SimpleGlide.addButtons(slider);
-      }
+      SimpleGlide.addSliderСomponents(slider, fillter);
     });
+  }
+
+  static addSliderСomponents(slider, fillter) {
+    for (let key in fillter) {
+      if (SimpleGlide.sliderСomponents.hasOwnProperty(key)) {
+        if (fillter[key]) {
+          SimpleGlide.sliderСomponents[key](slider);
+        }
+      }
+    }
   }
 
   static addButtons(slider) {

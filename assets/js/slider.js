@@ -55,15 +55,6 @@ class SimpleGlide {
     buttons: (slider) => {
       SimpleGlide.addButtons(slider);
     },
-    // radio: (slider) => {
-    //   SimpleGlide.addRadio(slider);
-    // },
-    // speed: (slider) => {
-    //   SimpleGlide.addButtons(slider);
-    // },
-    // timer: (slider) => {
-    //   SimpleGlide.addButtons(slider);
-    // },
   };
 
   static elements = (function () {
@@ -119,10 +110,10 @@ class SimpleGlide {
       return false;
     }
 
-    SimpleGlide.createTrack(this.selectors, fillter);
+    SimpleGlide.createSlider(this.selectors, fillter);
   }
 
-  static createTrack(sliders, fillter) {
+  static createSlider(sliders, fillter) {
     sliders.forEach((slider) => {
       SimpleGlide.elements.createTrack(slider);
       SimpleGlide.addSliderСomponents(slider, fillter);

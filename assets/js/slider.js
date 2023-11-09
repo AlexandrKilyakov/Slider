@@ -7,7 +7,7 @@ export class SimpleGlide {
 
     if (!this.selectors.length) return false;
 
-    const fillter = { ...defaultOptions, ...options };
+    const fillter = { ...options, ...defaultOptions };
 
     SimpleGlide.createSlider(this.selectors, fillter);
   }

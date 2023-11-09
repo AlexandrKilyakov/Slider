@@ -2,6 +2,7 @@ export const options = (function () {
   // Шаги - по кадрам, по окну видимости
   const step = {
     frame: false,
+    finish: false,
   };
 
   // Центрирование элементов - top, right, bottom, left, center
@@ -43,6 +44,7 @@ export const options = (function () {
     speed: auto.speed,
     timer: auto.timer,
     frame: step.frame,
+    finish: step.finish,
     posTimer: positions.auto.timer,
     posButtons: positions.nav.buttons,
     posRadio: positions.nav.radio,

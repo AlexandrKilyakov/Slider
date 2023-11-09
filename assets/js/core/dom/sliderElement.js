@@ -11,6 +11,11 @@ export class SliderElement extends CreateElement {
     this.slider = slider;
 
     this.createTrack();
+
+    this.window = slider.querySelector(".slider--window");
+    this.track = slider.querySelector(".slider--track");
+    this.window.dataset.step = "0";
+    SliderElement.takeStep(this);
   }
 
   static sliderСomponents = {
@@ -62,24 +67,30 @@ export class SliderElement extends CreateElement {
     obj.insertHTML(`<button class="slider--step" data-step="back"></button>
                       <button class="slider--step" data-step="next"></button>`);
 
-    SliderElement.eventButtons(obj.element);
+    SliderElement.eventButtons(obj.element, obj);
 
     obj.appendTo(obj.slider);
   }
 
-  static eventButtons(btns) {
-    btns.addEventListener("click", (event) => {
-      const btn = event.closest("[data-step]");
+  static eventButtons(btns, obj) {
+    btns.addEventListener("click", ({ target }) => {
+      const btn = target.closest("[data-step]");
 
       if (!btn) return;
 
-      // Логика кнопок
+      switch (btn.dataset.step) {
+        case "next":
+          SliderElement.takeStep(obj, 1);
+          break;
+        case "back":
+          SliderElement.takeStep(obj, -1);
+          break;
+      }
     });
   }
   static getSteps(obj) {
     const slides = obj.slider.querySelectorAll(".slide");
-    const sliderWindow = obj.slider.querySelector(".slider--window");
-    let windowWidth = sliderWindow.offsetWidth;
+    let windowWidth = obj.window.offsetWidth;
 
     const slidesLength = slides.length - 1;
     let slideStep = 0;
@@ -96,7 +107,7 @@ export class SliderElement extends CreateElement {
       slides.forEach((slide, i) => {
         if (slide.offsetLeft + slide.offsetWidth > windowWidth) {
           obj.steps.push(slide.offsetLeft);
-          windowWidth = sliderWindow.offsetWidth + slide.offsetLeft;
+          windowWidth = obj.window.offsetWidth + slide.offsetLeft;
           slideStep = i;
         }
       });
@@ -106,8 +117,8 @@ export class SliderElement extends CreateElement {
       const slidesLW =
         slides[slideStep].offsetLeft + slides[slideStep].offsetWidth;
 
-      if (windowWidth - slidesLW < sliderWindow.offsetWidth) {
-        let max = maxWidth - sliderWindow.offsetWidth;
+      if (windowWidth - slidesLW < obj.window.offsetWidth) {
+        let max = maxWidth - obj.window.offsetWidth;
 
         for (let i = obj.steps.length - 1; i >= 0; i--) {
           if (obj.steps[i] > max) {
@@ -120,5 +131,31 @@ export class SliderElement extends CreateElement {
         });
       }
     }
+  }
+
+  static takeStep(obj, route = 0) {
+    let max = obj.steps.length - 1;
+    let step = Number(obj.window.dataset.step) + route;
+
+    if (max < 0) {
+      max = 0;
+    }
+
+    if (obj.fillter.finish) {
+      if (step > max) {
+        step = max;
+      } else if (step < 0) {
+        step = 0;
+      }
+    } else {
+      if (step > max) {
+        step = 0;
+      } else if (step < 0) {
+        step = max;
+      }
+    }
+
+    obj.window.dataset.step = step;
+    obj.track.style.translate = `-${obj.steps[step]}px 0`;
   }
 }

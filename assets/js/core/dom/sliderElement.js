@@ -73,19 +73,17 @@ export class SliderElement extends CreateElement {
   }
 
   static eventButtons(btns, obj) {
+    const route = {
+      next: 1,
+      back: -1,
+    };
+
     btns.addEventListener("click", ({ target }) => {
       const btn = target.closest("[data-step]");
 
       if (!btn) return;
 
-      switch (btn.dataset.step) {
-        case "next":
-          SliderElement.takeStep(obj, 1);
-          break;
-        case "back":
-          SliderElement.takeStep(obj, -1);
-          break;
-      }
+      SliderElement.takeStep(obj, route[btn.dataset.step]);
     });
   }
   static getSteps(obj) {
